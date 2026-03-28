@@ -10,11 +10,11 @@ const verifyUser = async (req, res, next) => {
     }
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     if (!decoded) {
-      return res.status(404).json({ success: false, error: "Invalid Token!" });
+      return res.status(401).json({ success: false, error: "Invalid Token!" });
     }
   } catch (error) {
     return res
-      .status(404)
+      .status(401)
       .json({ success: false, error: "Internal server error" });
   }
 };
