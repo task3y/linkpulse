@@ -41,6 +41,7 @@ const createLink = async (req, res) => {
 
     res.status(201).json(link);
   } catch (error) {
+    console.error("CREATE LINK ERROR:", error);
     return res
       .status(500)
       .json({ message: "Server error", error: error.message });
@@ -49,18 +50,22 @@ const createLink = async (req, res) => {
 
 const getLinks = async (req, res) => {
   try {
-    const links = await Link.find(
-      { userId: req.user.id }.sort({ created: -1 }),
-    );
+    const links = await Link.find({ userId: req.user.id }).sort({
+      createdAt: -1,
+    });
     return res.status(200).json(links);
   } catch (error) {
-    return res.status(500).json({ message: " Server Error" });
+    console.error("GET LINKS ERROR:", error);
+    return res.status(500).json({ message: "Server Error" });
   }
 };
 
 const deleteLink = async (req, res) => {
   try {
-    const link = await Link.findOne({ id: req.params.id, userId: req.user.id });
+    const link = await Link.findOne({
+      _id: req.params.id,
+      userId: req.user.id,
+    });
     if (!link) {
       return res.status(404).json({ message: "Link not found" });
     }
@@ -75,7 +80,10 @@ const deleteLink = async (req, res) => {
 
 const toggleLink = async (req, res) => {
   try {
-    const link = await Link.findOne({ id: req.params.id, userId: req.user.id });
+    const link = await Link.findOne({
+      _id: req.params.id,
+      userId: req.user.id,
+    });
     if (!link) {
       return res.status(404).json({ message: "Link not found" });
     }
