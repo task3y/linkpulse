@@ -1,17 +1,16 @@
-import express, { json } from "express";
+import express from "express";
 import { connect } from "mongoose";
 import cors from "cors";
+import dotenv from "dotenv";
+import authRoutes from "./routes/auth.routes.js";
+import linkRoutes from "./routes/link.routes.js";
+import redirectRoutes from "./routes/redirect.routes.js";
 
-require("dotenv").config();
-
-import authRoutes from "./routes/auth.routes";
-import linkRoutes from "./routes/link.routes";
-import redirectRoutes from "./routes/redirect.routes";
-
+dotenv.config();
 const app = express();
 
 app.use(cors({ origin: process.env.CLIENT_URL }));
-app.use(json());
+app.use(express.json());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/links", linkRoutes);

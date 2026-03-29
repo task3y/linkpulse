@@ -1,12 +1,12 @@
-import Link from "../models/Link.model";
-import Click from "../models/Click.model";
-import nanoid from "nanoid";
+import Link from "../models/Link.model.js";
+import Click from "../models/Click.model.js";
+import { nanoid } from "nanoid";
 import useragent from "useragent";
 import {
   getCachedUrl,
   setCachedUrl,
   deleteCachedUrl,
-} from "../services/redis.service";
+} from "../services/redis.service.js";
 
 const createLink = async (req, res) => {
   try {

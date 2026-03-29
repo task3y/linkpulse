@@ -1,5 +1,5 @@
 import express from "express";
-import { redirectLink } from "../controllers/link.controller";
+import { redirectLink } from "../controllers/link.controller.js";
 
 const router = express.Router();
 
