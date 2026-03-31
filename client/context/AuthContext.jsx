@@ -3,7 +3,7 @@ import api from "@/lib/api";
 import Cookies from "js-cookie";
 import { useEffect } from "react";
 import { createContext, useState, useContext } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 const AuthContext = createContext();
 
