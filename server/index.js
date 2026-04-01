@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import authRoutes from "./routes/auth.routes.js";
 import linkRoutes from "./routes/link.routes.js";
 import redirectRoutes from "./routes/redirect.routes.js";
+import analyticsRoutes from "./routes/analytics.routes.js";
 
 dotenv.config();
 const app = express();
@@ -14,6 +15,7 @@ app.use(express.json());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/links", linkRoutes);
+app.use("/api/analytics", analyticsRoutes);
 
 app.use("/", redirectRoutes);
 
