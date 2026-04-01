@@ -50,9 +50,29 @@ const createLink = async (req, res) => {
 
 const getLinks = async (req, res) => {
   try {
-    const links = await Link.find({ userId: req.user.id }).sort({
-      createdAt: -1,
-    });
+    const { search, status, sort } = req.query;
+
+    const filter = { userId: req.user.id };
+
+    if (status === "active") filter.isActive = true;
+    if (status === "inactive") filter.isActive = false;
+
+    if (search) {
+      filter.$or = [
+        { title: { $regex: search, $options: "i" } },
+        { slug: { $regex: search, $options: "i" } },
+        { originalUrl: { $regex: search, $options: "i" } },
+      ];
+    }
+
+    const sortOption =
+      sort === "clicks"
+        ? { totalClicks: -1 }
+        : sort === "oldest"
+          ? { createdAt: 1 }
+          : { createdAt: -1 };
+
+    const links = await Link.find(filter).sort(sortOption);
     return res.status(200).json(links);
   } catch (error) {
     console.error("GET LINKS ERROR:", error);
