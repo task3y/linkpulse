@@ -3,6 +3,7 @@ import { useState } from "react";
 import api from "@/lib/api";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import { Link2, Eye, EyeOff } from "lucide-react";
 
 const RegisterPage = () => {
   const router = useRouter();
