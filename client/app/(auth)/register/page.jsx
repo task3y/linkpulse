@@ -8,6 +8,8 @@ const RegisterPage = () => {
   const router = useRouter();
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,51 +19,143 @@ const RegisterPage = () => {
       router.push("/dashboard");
     } catch (err) {
       setError(err.response?.data?.message || "Registration failed");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-950">
-      <div className="bg-gray-900 p-8 rounded-2xl w-full max-w-md shadow-xl">
-        <h1 className="text-2xl font-bold text-white mb-6">
-          Create your account
-        </h1>
-        {error && <p className="text-red-400 mb-4 text-sm">{error}</p>}
-        <div className="space-y-4">
-          <input
-            type="text"
-            placeholder="Full Name"
-            className="w-full bg-gray-800 text-white px-4 py-3 rounded-lg outline-none"
-            value={form.name}
-            onChange={(e) => setForm({ ...form, name: e.target.value })}
-          />
-          <input
-            type="email"
-            placeholder="Email"
-            className="w-full bg-gray-800 text-white px-4 py-3 rounded-lg outline-none"
-            value={form.email}
-            onChange={(e) => setForm({ ...form, email: e.target.value })}
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            className="w-full bg-gray-800 text-white px-4 py-3 rounded-lg outline-none"
-            value={form.password}
-            onChange={(e) => setForm({ ...form, password: e.target.value })}
-          />
-          <button
-            onClick={handleSubmit}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold transition"
-          >
-            Register
-          </button>
+    <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center p-4">
+      <div className="w-full max-w-4xl bg-[#0f0f1a] rounded-3xl overflow-hidden flex shadow-2xl border border-white/5">
+        <div className="w-full md:w-1/2 p-10 flex flex-col justify-center">
+          <div className="flex items-center gap-2 mb-10">
+            <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
+              <Link2 size={16} className="text-white" />
+            </div>
+            <span className="text-white font-bold text-lg">LinkPulse</span>
+          </div>
+
+          <h1 className="text-3xl font-bold text-white mb-1">Sign up</h1>
+          <p className="text-slate-400 text-sm mb-8">
+            Sign up to enjoy all features of LinkPulse.
+          </p>
+
+          {error && (
+            <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-sm px-4 py-3 rounded-xl mb-4">
+              {error}
+            </div>
+          )}
+
+          <div className="space-y-4">
+            <div>
+              <label className="text-xs text-slate-400 mb-1 block">
+                Your Name
+              </label>
+              <input
+                type="text"
+                placeholder="John Doe"
+                className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 rounded-xl outline-none focus:border-indigo-500/50 transition placeholder:text-slate-600"
+                value={form.name}
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
+              />
+            </div>
+
+            <div>
+              <label className="text-xs text-slate-400 mb-1 block">Email</label>
+              <input
+                type="email"
+                placeholder="you@example.com"
+                className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 rounded-xl outline-none focus:border-indigo-500/50 transition placeholder:text-slate-600"
+                value={form.email}
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
+              />
+            </div>
+
+            <div>
+              <label className="text-xs text-slate-400 mb-1 block">
+                Password
+              </label>
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="••••••••"
+                  className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 rounded-xl outline-none focus:border-indigo-500/50 transition placeholder:text-slate-600 pr-12"
+                  value={form.password}
+                  onChange={(e) =>
+                    setForm({ ...form, password: e.target.value })
+                  }
+                />
+                <button
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition"
+                >
+                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              </div>
+            </div>
+
+            <button
+              onClick={handleSubmit}
+              disabled={loading}
+              className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 disabled:opacity-50 text-white py-3 rounded-xl font-semibold transition-all duration-200 mt-2"
+            >
+              {loading ? "Creating account..." : "Sign up"}
+            </button>
+          </div>
+
+          <p className="text-slate-500 text-sm mt-6 text-center">
+            Already have an account?{" "}
+            <a
+              href="/login"
+              className="text-indigo-400 hover:text-indigo-300 transition"
+            >
+              Sign in
+            </a>
+          </p>
         </div>
-        <p className="text-gray-400 text-sm mt-4">
-          Already have an account?{" "}
-          <a href="/login" className="text-blue-400 hover:underline">
-            Login
-          </a>
-        </p>
+
+        <div className="hidden md:flex w-1/2 relative overflow-hidden bg-gradient-to-br from-indigo-600/20 to-purple-600/20 items-center justify-center">
+          <div className="absolute top-[-20%] right-[-20%] w-96 h-96 bg-indigo-600/30 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute bottom-[-20%] left-[-20%] w-96 h-96 bg-purple-600/30 rounded-full blur-3xl animate-pulse delay-1000" />
+          <div className="absolute top-[40%] left-[30%] w-48 h-48 bg-cyan-500/20 rounded-full blur-2xl animate-pulse delay-500" />
+
+          <div
+            className="absolute inset-0 opacity-10"
+            style={{
+              backgroundImage:
+                "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)",
+              backgroundSize: "40px 40px",
+            }}
+          />
+
+          <div className="relative text-center px-8">
+            <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-2xl">
+              <Link2 size={28} className="text-white" />
+            </div>
+            <h2 className="text-white text-2xl font-bold mb-2">
+              Join LinkPulse
+            </h2>
+            <p className="text-slate-400 text-sm">
+              Start shortening links and tracking analytics for free
+            </p>
+
+            <div className="mt-8 space-y-3">
+              {[
+                { label: "✦ Free forever plan" },
+                { label: "✦ Real-time analytics" },
+                { label: "✦ Custom short links" },
+                { label: "✦ Device & location tracking" },
+              ].map((item, i) => (
+                <div
+                  key={i}
+                  className="bg-white/5 backdrop-blur border border-white/10 rounded-xl px-4 py-3 text-left"
+                >
+                  <span className="text-slate-300 text-sm">{item.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
