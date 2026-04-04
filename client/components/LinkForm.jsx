@@ -3,7 +3,7 @@ import { useState } from "react";
 import api from "@/lib/api";
 import { Plus } from "lucide-react";
 
-export default function LinkForm({ onLinkCreated }) {
+const LinkForm = ({ onLinkCreated }) => {
   const [form, setForm] = useState({
     originalUrl: "",
     title: "",
@@ -35,58 +35,68 @@ export default function LinkForm({ onLinkCreated }) {
   };
 
   return (
-    <div className="bg-gray-900 rounded-2xl p-6 mb-6">
-      <h2 className="text-lg font-semibold text-white mb-4">Shorten a URL</h2>
-      {error && <p className="text-red-400 text-sm mb-3">{error}</p>}
+    <div className="bg-white/3 border border-white/8 rounded-2xl p-6 mb-6">
+      <h2 className="text-white font-semibold mb-4 flex items-center gap-2">
+        <Plus size={16} className="text-indigo-400" />
+        Shorten a URL
+      </h2>
+
+      {error && (
+        <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-sm px-4 py-2 rounded-xl mb-4">
+          {error}
+        </div>
+      )}
+
       <div className="flex gap-3">
         <input
           type="url"
           placeholder="Paste your long URL here..."
-          className="flex-1 bg-gray-800 text-white px-4 py-3 rounded-lg outline-none"
+          className="flex-1 bg-white/5 border border-white/10 text-white px-4 py-3 rounded-xl outline-none focus:border-indigo-500/50 transition placeholder:text-slate-600"
           value={form.originalUrl}
           onChange={(e) => setForm({ ...form, originalUrl: e.target.value })}
         />
         <button
           onClick={handleSubmit}
           disabled={loading || !form.originalUrl}
-          className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white px-6 py-3 rounded-lg font-semibold transition flex items-center gap-2"
+          className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 disabled:opacity-50 text-white px-6 py-3 rounded-xl font-semibold transition flex items-center gap-2 whitespace-nowrap"
         >
-          <Plus size={18} />
+          <Plus size={16} />
           {loading ? "Creating..." : "Shorten"}
         </button>
       </div>
 
       <button
         onClick={() => setShowAdvanced(!showAdvanced)}
-        className="text-gray-400 hover:text-white text-sm mt-3 transition"
+        className="flex items-center gap-1 text-slate-500 hover:text-slate-300 text-sm mt-3 transition"
       >
-        {showAdvanced ? "− Hide" : "+ Advanced"} options
+        {showAdvanced ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+        {showAdvanced ? "Hide" : "Advanced"} options
       </button>
 
       {showAdvanced && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mt-3">
-          <input
-            type="text"
-            placeholder="Title (optional)"
-            className="bg-gray-800 text-white px-4 py-3 rounded-lg outline-none"
-            value={form.title}
-            onChange={(e) => setForm({ ...form, title: e.target.value })}
-          />
-          <input
-            type="text"
-            placeholder="Custom slug (optional)"
-            className="bg-gray-800 text-white px-4 py-3 rounded-lg outline-none"
-            value={form.customSlug}
-            onChange={(e) => setForm({ ...form, customSlug: e.target.value })}
-          />
-          <input
-            type="date"
-            className="bg-gray-800 text-white px-4 py-3 rounded-lg outline-none"
-            value={form.expiresAt}
-            onChange={(e) => setForm({ ...form, expiresAt: e.target.value })}
-          />
+          {[
+            { placeholder: "Title (optional)", key: "title", type: "text" },
+            {
+              placeholder: "Custom slug (optional)",
+              key: "customSlug",
+              type: "text",
+            },
+            { placeholder: "Expiry date", key: "expiresAt", type: "date" },
+          ].map((f) => (
+            <input
+              key={f.key}
+              type={f.type}
+              placeholder={f.placeholder}
+              className="bg-white/5 border border-white/10 text-white px-4 py-3 rounded-xl outline-none focus:border-indigo-500/50 transition placeholder:text-slate-600"
+              value={form[f.key]}
+              onChange={(e) => setForm({ ...form, [f.key]: e.target.value })}
+            />
+          ))}
         </div>
       )}
     </div>
   );
-}
+};
+
+export default LinkForm;

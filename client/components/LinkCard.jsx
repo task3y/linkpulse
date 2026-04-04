@@ -8,10 +8,11 @@ import {
   ToggleLeft,
   ToggleRight,
   Check,
+  ExternalLink,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-export default function LinkCard({ link, onDelete, onToggle }) {
+const LinkCard = ({ link, onDelete, onToggle }) => {
   const router = useRouter();
   const [copied, setCopied] = useState(false);
   const shortUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}/${link.slug}`;
@@ -35,57 +36,84 @@ export default function LinkCard({ link, onDelete, onToggle }) {
 
   return (
     <div
-      className={`bg-gray-900 rounded-xl p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 border ${
-        link.isActive ? "border-gray-800" : "border-red-900/40 opacity-60"
+      className={`bg-white/3 rounded-2xl p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 border transition hover:bg-white/5 ${
+        link.isActive ? "border-white/8" : "border-red-500/10 opacity-60"
       }`}
     >
       <div className="flex-1 min-w-0">
-        <p className="text-white font-medium truncate">
-          {link.title || link.slug}
-        </p>
-        <p className="text-blue-400 text-sm">{shortUrl}</p>
-        <p className="text-gray-500 text-xs truncate mt-1">
+        <div className="flex items-center gap-2 mb-1">
+          <p className="text-white font-medium truncate">
+            {link.title || link.slug}
+          </p>
+          {!link.isActive && (
+            <span className="text-xs bg-red-500/10 text-red-400 border border-red-500/20 px-2 py-0.5 rounded-full">
+              Inactive
+            </span>
+          )}
+        </div>
+        <p className="text-indigo-400 text-sm">{shortUrl}</p>
+        <p className="text-slate-600 text-xs truncate mt-0.5">
           {link.originalUrl}
         </p>
       </div>
 
-      <div className="flex items-center gap-2 text-sm text-gray-400">
-        <span className="bg-gray-800 px-3 py-1 rounded-full text-xs">
+      <div className="flex items-center gap-1">
+        <span className="bg-white/5 border border-white/10 px-3 py-1 rounded-full text-xs text-slate-400 mr-2">
           {link.totalClicks} clicks
         </span>
-        <button
-          onClick={handleCopy}
-          className="p-2 hover:text-white transition"
-        >
-          {copied ? (
-            <Check size={16} className="text-green-400" />
-          ) : (
-            <Copy size={16} />
-          )}
-        </button>
-        <button
-          onClick={() => router.push(`/analytics/${link.slug}`)}
-          className="p-2 hover:text-white transition"
-        >
-          <BarChart2 size={16} />
-        </button>
-        <button
-          onClick={handleToggle}
-          className="p-2 hover:text-white transition"
-        >
-          {link.isActive ? (
-            <ToggleRight size={18} className="text-green-400" />
-          ) : (
-            <ToggleLeft size={18} className="text-red-400" />
-          )}
-        </button>
-        <button
-          onClick={handleDelete}
-          className="p-2 hover:text-red-400 transition"
-        >
-          <Trash2 size={16} />
-        </button>
+
+        {[
+          {
+            icon: copied ? (
+              <Check size={15} className="text-green-400" />
+            ) : (
+              <Copy size={15} />
+            ),
+            onClick: handleCopy,
+            title: "Copy",
+          },
+          {
+            icon: <ExternalLink size={15} />,
+            onClick: () => window.open(link.originalUrl, "_blank"),
+            title: "Open",
+          },
+          {
+            icon: <BarChart2 size={15} />,
+            onClick: () => router.push(`/analytics/${link.slug}`),
+            title: "Analytics",
+          },
+          {
+            icon: link.isActive ? (
+              <ToggleRight size={17} className="text-green-400" />
+            ) : (
+              <ToggleLeft size={17} className="text-red-400" />
+            ),
+            onClick: handleToggle,
+            title: "Toggle",
+          },
+          {
+            icon: <Trash2 size={15} />,
+            onClick: handleDelete,
+            title: "Delete",
+            danger: true,
+          },
+        ].map((btn, i) => (
+          <button
+            key={i}
+            onClick={btn.onClick}
+            title={btn.title}
+            className={`p-2 rounded-lg transition text-slate-400 ${
+              btn.danger
+                ? "hover:text-red-400 hover:bg-red-500/10"
+                : "hover:text-white hover:bg-white/10"
+            }`}
+          >
+            {btn.icon}
+          </button>
+        ))}
       </div>
     </div>
   );
-}
+};
+
+export default LinkCard;
