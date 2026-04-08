@@ -14,6 +14,16 @@ const RegisterPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(form.email)) {
+      setError("Please enter a valid email address");
+      setLoading(false);
+      return;
+    }
     try {
       const { data } = await api.post("/auth/register", form);
       Cookies.set("token", data.token, { expires: 7 });
