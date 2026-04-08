@@ -60,40 +60,18 @@ const Navbar = () => {
 
       {/* Right */}
       <div className="flex items-center gap-2">
-        {/* Logout button */}
-        <button
-          onClick={logout}
-          className="flex items-center gap-3 bg-black hover:bg-gray-50 shadow-md rounded-full pl-4 pr-1.5 py-1.5 transition group"
-        >
-          {/* Back arrow + text */}
-          <div className="flex items-center gap-1 text-gray-300 group-hover:text-gray-400 transition">
-            <ChevronLeft size={15} />
-            <span className="text-gray-300 font-medium text-lg">Logout</span>
-          </div>
-
-          {/* Avatar */}
-          <div className="w-10 h-10 rounded-full overflow-hidden bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
-            {user?.name?.charAt(0).toUpperCase() || "U"}
-          </div>
-        </button>
-
         {/* Pill */}
         <div className="relative">
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-full pl-2 pr-2 py-1.5 hover:bg-white/10 transition"
+            className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-full pl-2 pr-2 py-1.5 hover:bg-white/10 transition"
           >
-            {/* Avatar */}
             <div className="w-6 h-6 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white text-xs font-bold">
               {user?.name?.charAt(0).toUpperCase() || "U"}
             </div>
-
-            {/* Email */}
             <span className="text-white text-sm hidden md:block max-w-[120px] truncate">
               {user?.email}
             </span>
-
-            {/* Plan badge */}
             <span
               className={`text-xs px-2 py-0.5 rounded-full font-medium hidden md:block ${
                 user?.plan === "pro"
@@ -103,8 +81,6 @@ const Navbar = () => {
             >
               {user?.plan?.toUpperCase()}
             </span>
-
-            {/* Menu icon */}
             <div className="w-6 h-6 bg-[#1a1a2e] rounded-full flex items-center justify-center">
               <Menu size={13} className="text-white" />
             </div>
@@ -113,7 +89,6 @@ const Navbar = () => {
           {/* Dropdown */}
           {menuOpen && (
             <div className="absolute right-0 mt-2 w-56 bg-[#0f0f1a] border border-white/10 rounded-2xl shadow-xl overflow-hidden z-50">
-              {/* User Info */}
               <div className="px-4 py-4 border-b border-white/5">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">
@@ -129,8 +104,6 @@ const Navbar = () => {
                   </div>
                 </div>
               </div>
-
-              {/* Upgrade to Pro */}
               {user?.plan !== "pro" && (
                 <div className="p-3">
                   <button className="w-full flex items-center gap-2 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border border-yellow-500/20 hover:from-yellow-500/30 hover:to-orange-500/30 text-yellow-400 px-4 py-2.5 rounded-xl text-sm font-medium transition">
@@ -142,6 +115,15 @@ const Navbar = () => {
             </div>
           )}
         </div>
+
+        {/* Logout Button — last */}
+        <button
+          onClick={logout}
+          className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-3 py-1.5 hover:bg-red-500/10 hover:border-red-500/20 hover:text-red-400 text-slate-400 transition text-sm"
+        >
+          <LogOut size={15} />
+          <span className="hidden md:block">Logout</span>
+        </button>
       </div>
     </nav>
   );
