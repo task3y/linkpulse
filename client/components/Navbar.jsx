@@ -1,6 +1,14 @@
 "use client";
 import { useAuth } from "@/context/AuthContext";
-import { LogOut, Link2, History, LayoutDashboard, Menu } from "lucide-react";
+import {
+  LogOut,
+  Link2,
+  History,
+  LayoutDashboard,
+  Menu,
+  Zap,
+  ChevronLeft,
+} from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
 import { useState } from "react";
 
@@ -55,10 +63,18 @@ const Navbar = () => {
         {/* Logout button */}
         <button
           onClick={logout}
-          className="w-8 h-8 flex items-center justify-center rounded-full text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition"
-          title="Logout"
+          className="flex items-center gap-3 bg-black hover:bg-gray-50 shadow-md rounded-full pl-4 pr-1.5 py-1.5 transition group"
         >
-          <LogOut size={15} />
+          {/* Back arrow + text */}
+          <div className="flex items-center gap-1 text-gray-300 group-hover:text-gray-400 transition">
+            <ChevronLeft size={15} />
+            <span className="text-gray-300 font-medium text-lg">Logout</span>
+          </div>
+
+          {/* Avatar */}
+          <div className="w-10 h-10 rounded-full overflow-hidden bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+            {user?.name?.charAt(0).toUpperCase() || "U"}
+          </div>
         </button>
 
         {/* Pill */}
