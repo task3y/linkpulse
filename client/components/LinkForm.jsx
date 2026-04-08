@@ -37,7 +37,6 @@ const LinkForm = ({ onLinkCreated }) => {
   return (
     <div className="bg-white/3 border border-white/8 rounded-2xl p-6 mb-6">
       <h2 className="text-white font-semibold mb-4 flex items-center gap-2">
-        <Plus size={16} className="text-indigo-400" />
         Shorten a URL
       </h2>
 
@@ -47,11 +46,11 @@ const LinkForm = ({ onLinkCreated }) => {
         </div>
       )}
 
-      <div className="flex gap-3">
+      <div className="flex gap-3 items-center gap-2 bg-white/5 border border-white/10 rounded-2xl p-2">
         <input
           type="url"
-          placeholder="Paste your long URL here..."
-          className="flex-1 bg-white/5 border border-white/10 text-white px-4 py-3 rounded-xl outline-none focus:border-indigo-500/50 transition placeholder:text-slate-600"
+          placeholder="Enter long link here..."
+          className="flex-1 bg-transparent text-white px-4 py-3 outline-none placeholder:text-slate-600"
           value={form.originalUrl}
           onChange={(e) => setForm({ ...form, originalUrl: e.target.value })}
         />

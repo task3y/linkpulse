@@ -70,7 +70,7 @@ const LandingPage = () => {
           />
           <button
             onClick={handleShorten}
-            className="flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white px-6 py-3 rounded-xl font-semibold transition"
+            className="flex items-center gap-1 text-slate-500 hover:text-slate-300 text-sm mt-3 transition"
           >
             Shorten URL
             <ArrowRight size={16} />
