@@ -22,9 +22,8 @@ const Navbar = () => {
     {
       label: "Dashboard",
       href: "/dashboard",
-      icon: <LayoutDashboard size={15} />,
     },
-    { label: "History", href: "/history", icon: <History size={15} /> },
+    { label: "History", href: "/history" },
   ];
 
   return (
